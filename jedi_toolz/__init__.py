@@ -1,4 +1,4 @@
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 
 from jedi_toolz import config
 from jedi_toolz.show import show
