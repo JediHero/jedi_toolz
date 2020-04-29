@@ -14,24 +14,30 @@ __all__ = (
     "to_table to_pandas"
 ).split()
 
-RecordValue = Union[str, bool, int, float, date, datetime, None]
+RecordValue = Union[str, bool, int, float, date,
+    datetime, None]
 Record = Dict[str, RecordValue]
 Table = Iterable[Record]
 
 def has_all_attrs(obj: Any, attrs: str) -> bool:
     assert isinstance(attrs, str)
-    return all([hasattr(obj, attr) for attr in attrs.split()])
+    return all([hasattr(obj, attr)
+        for attr in attrs.split()])
 
 def has_any_attrs(obj: Any, attrs: str) -> bool:
     assert isinstance(attrs, str)
-    return any([hasattr(obj, attr) for attr in attrs.split()])
+    return any([hasattr(obj, attr) 
+        for attr in attrs.split()])
 
 def has_pandas() -> bool:
     return (True if pandas else False)
 
 def is_pandas(data: Any) -> bool:
     assert data is not None
-    attrs = "values columns transpose head to_dict from_records"
+    attrs = (
+        "values columns transpose head to_dict "
+        "from_records"
+    )
     if not has_pandas():
         return False
     elif has_all_attrs(data, attrs):
@@ -40,10 +46,12 @@ def is_pandas(data: Any) -> bool:
         return False
 
 def is_record_value(value: Any) -> bool:
-    test = isinstance(value, (str, bool, int, float, date, datetime))
+    test = isinstance(value, (str, bool, int, float, date,
+        datetime))
     return test or value is None
 
-def record_value(value: Any, use_repr: bool=False) -> RecordValue:
+def record_value(value: Any, use_repr: bool=False
+    ) -> RecordValue:
     return (
         value if is_record_value(value) else
         str(value)
@@ -55,7 +63,8 @@ def is_record(data: Any) -> bool:
         return False
     if not all([isinstance(k, str) for k in data]):
         return False
-    if not all([ is_record_value(v) for k, v in data.items()]):
+    if not all([ is_record_value(v) 
+        for k, v in data.items()]):
         return False
     else:
         return True
@@ -104,7 +113,8 @@ def to_table(data: Any) -> Table:
             for k, v in row.items()
         ]
     else:
-        raise ValueError("Value is None, must be a valide TableType.")
+        raise ValueError(
+            "Value is None, must be a valide TableType.")
 
 def to_pandas(data: Table):
     assert is_table(data) == True
