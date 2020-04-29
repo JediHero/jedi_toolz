@@ -122,3 +122,12 @@ def to_pandas(data: Table):
         return pandas.DataFrame.from_records(data)
     else:
         raise ModuleNotFoundError("pandas is not installed")
+
+def handle_data(func, *args, **kwargs):
+    orig = [arg for arg in args]
+    data = to_table(orig[0])
+    updated = [
+        data if num == 0 else arg 
+        for num, arg in enumerate(orig)
+    ]
+    return func(*updated, **kwargs)

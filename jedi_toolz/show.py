@@ -1,28 +1,12 @@
 __all__ = ['transpose', 'wrap_row', 'wrap_table', 'show']
 
 # Internal Cell
-try:
-    import pandas
-    has_pandas = lambda: True
-except ModuleNotFoundError:
-    has_pandas = lambda: False
-
-from tabulate import tabulate
+from jedi_toolz.data import *
 from textwrap import fill
 import toolz.curried as tz
 import itertools as it
-from decorator import decorator
 
-@decorator
-def handle_pandas(func, *args, **kwargs):
-    orig = [arg for arg in args]
-    data = orig[0]
-    if has_pandas() and isinstance(data, pandas.DataFrame):
-        data = data.to_dict("records")
-    updated = [data if num == 0 else arg for num, arg in enumerate(orig)]
-    return func(*updated, **kwargs)
-
-@handle_pandas
+@handle_data
 def text_table(data, print_out=True, **tabulate_args):
     defaults = {
         "tablefmt": "fancy_grid",
@@ -36,11 +20,11 @@ def text_table(data, print_out=True, **tabulate_args):
     else:
         return tab(data)
 
-@handle_pandas
+@handle_data
 def head(data, limit=100):
     return list(tz.take(limit, data))
 
-@handle_pandas
+@handle_data
 def transpose(data):
     count = it.count(1)
     row_num = lambda: next(count)
@@ -63,7 +47,7 @@ def wrap_row(row, col_width):
         result[new_k] = new_v
     return result
 
-@handle_pandas
+@handle_data
 def wrap_table(data, col_width):
     """Takes a list of dicts and wraps the keys and values by the
     specified col_width."""
@@ -72,7 +56,7 @@ def wrap_table(data, col_width):
 def text_width(text):
     return max(len(line) for line in text.splitlines())
 
-@handle_pandas
+@handle_data
 def get_text(data, limit, vert, col_width):
     return tz.pipe(
         head(data, limit),
@@ -82,7 +66,7 @@ def get_text(data, limit, vert, col_width):
     )
 
 @tz.curry
-@handle_pandas
+@handle_data
 def show(data, limit=30, vert=False, col_width=15, table_width=80):
     orig = get_text(data, limit, vert, col_width)
     if text_width(orig) <= table_width:
