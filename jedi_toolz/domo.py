@@ -12,7 +12,7 @@ import csv
 __tables__ = None
 
 def connect() -> pydomo.Domo:
-    """Instantiates a pydomo.Domo object"""
+    """Returns a connection object to a DOMO instance."""
     client_id = config.select("domo", "client_id")
     secret = config.select("domo", "secret")
     return pydomo.Domo(client_id, secret)

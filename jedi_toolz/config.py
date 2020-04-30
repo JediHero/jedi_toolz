@@ -6,35 +6,30 @@ __all__ = ['set_path', 'as_dict', 'as_records', 'select', 'example_ini']
 from configparser import ConfigParser
 import os
 from pathlib import Path
+from typing import Dict, List, Optional, Union
 
-__jedi_toolz_var__ = "JEDI_TOOLZ_PATH"
-__jedi_toolz_path__ = ""
-__jedi_toolz_path_method__ = ""
+environ = "JEDI_TOOLZ_PATH"
 
-def set_path(config_path=None) -> Path:
-    global __jedi_toolz_path__
-    global __jedi_toolz_path_method__
+PathOrStr = Optional[Union[str,Path]]
 
-    # Set __jedi_toolz_path__
+def set_path(config_path: PathOrStr=None) -> Path:
+    """Returns the path to the jedi_toolz.ini file or the path
+    to the config_path.ini file.
+    """
     if config_path:
-        __jedi_toolz_path_method__ = "config_path"
-        __jedi_toolz_path__ = config_path
-    elif __jedi_toolz_path__:
-        pass #already set
+        return Path(config_path).expanduser()
+    elif os.getenv(environ):
+        return Path(os.getenv(environ)).expanduser()
     else:
-        var = os.getenv(__jedi_toolz_var__)
-        __jedi_toolz_path_method__ = var
-        __jedi_toolz_path__ = var
+        raise ValueError(
+            f"Either {environ} environment variable must exist "
+            "or config_path must be provided."
+        )
 
-    # config_path AND __jedi_toolz_var__ don't exist
-    assert __jedi_toolz_path__ is not None, f"config_path or {__jedi_toolz_var__} not provided"
-    path = Path(__jedi_toolz_path__).expanduser()
-    assert path.exists(), f"{__jedi_toolz_path__} does not exist"
-    return path
 
-def as_dict():
+def as_dict(config_path: PathOrStr=None) -> Dict[str,str]:
     """Returns configurations as a nested dict. Keys and values are strings."""
-    location = set_path()
+    location = set_path(config_path)
     cfg = ConfigParser()
     cfg.read(location)
     sections = cfg.sections()
@@ -44,23 +39,24 @@ def as_dict():
         result[section] = options
     return result
 
-def as_records():
+def as_records(config_path: PathOrStr=None) -> List[Dict[str,str]]:
     """Returns configurations as a list of dicts."""
     return [
         {"section": section, "option": option, "value": value}
-        for section, options in as_dict().items()
+        for section, options in as_dict(config_path).items()
         for option, value in options.items()
     ]
 
-def select(section, option=None):
+def select(section: str, option: Optional[str]=None, config_path: PathOrStr=None) -> Union[Dict[str, str], str]:
     """Returns the configuration a nested dict or value."""
-    settings = as_dict()
+    settings = as_dict(config_path)
     if option:
         return settings[section][option]
     else:
         return settings[section]
 
 def example_ini():
+    """Creates an example.ini file and returns it's path."""
     path = Path.cwd() / "tests/example.ini"
     with path.open(mode="w") as file:
         file.writelines([
