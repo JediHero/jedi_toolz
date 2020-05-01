@@ -1,5 +1,5 @@
 from jedi_toolz.data import (is_pandas, is_record_value, is_record,
-    record_value, is_table, to_table)
+    record_value, is_table, to_table, decamel, multichar, pretty_names)
 from datetime import datetime, date
 import pandas
 
@@ -59,3 +59,27 @@ def test_to_table():
 
     expected2 = [{"column": "5", "value": "five"}]
     assert to_table(normal_dict()) == expected2
+
+def test_decamel():
+    assert decamel("FirstName") == "First_Name"
+    assert decamel("FirstNameMD") == "First_Name_MD"
+    assert decamel("First Name") == "First Name"
+    assert decamel("FirstName", ".") == "First.Name"
+
+def test_multichar():
+    assert multichar("First__Name_MD_", "_") == "First_Name_MD"
+    assert multichar(" First  Name  MD") == "First Name MD"
+
+def test_pretty_names():
+    tbl = [
+        {"FirstName": "Joe", "Age_In_Years": 40},
+        {"FirstName": "Mary", "Age_In_Years": 35},
+    ]
+    assert pretty_names(tbl) == [
+        {"First Name": "Joe", "Age In Years": 40},
+        {"First Name": "Mary", "Age In Years": 35},
+    ]
+    assert pretty_names(tbl, decamel,str.lower) == [
+        {"first_name": "Joe", "age_in_years": 40},
+        {"first_name": "Mary", "age_in_years": 35},
+    ]

@@ -1,3 +1,5 @@
+__version__ = "0.0.7"
+
 """jedi_toolz is a python package containing many utilities to simplify working
 with data.
 
@@ -15,6 +17,32 @@ jedi_toolz is divided into the following sub-modules:
 
 2.  data:   Provides many helper functions for checking the type of data
             passed and converting dict objects to tables and record objects.
+
+            to_table -> converts a dict to a table.
+
+            handle_data -> decorator to convert the first arg of a function to
+            a table.
+
+            decamel -> Reformats a string in CamelCase to Camel_Case.
+
+            multichar -> Reformats a string replacing consecutive values of
+            a character with a single value. First__Name_ to First_Name.
+
+            pretty_names -> Convert the keys/columns of a table to pretty names.
+            >>> tbl = [
+                {'FirstName': 'Joe',  'Age_In_Years': 40},
+                {'FirstName': 'Mary', 'Age_In_Years': 35},
+            ]
+            >>> pretty_names(tbl)
+            [
+                {'First Name': 'Joe',  'Age In Years': 40},
+                {'First Name': 'Mary', 'Age In Years': 35},
+            ]
+            >>> pretty_names(tbl, decamel, str.lower)
+            [
+                {'first_name': 'Joe',  'age_in_years': 40},
+                {'first_name': 'Mary', 'age_in_years': 35},
+            ]
 
 3.  domo:   Connects to a DOMO instance using credentials defined in a .ini
             config file and provides several helper functions.
@@ -42,32 +70,31 @@ jedi_toolz is divided into the following sub-modules:
             show -> prints an ascii table using the tabulate package. Column
             and table width can be contrained by using the col_width and
             table_width parameters. The data will automatically be transposed if
-            the table width is exceeded so that the output will fit the table_width.
+            the table width is exceeded so that the output will fit the
+            table_width.
 
-5.  xlsx:   Provides functions for exporting and formatting data in a .xlsx file.
-            Uses openpyxl to export and read data.
+5.  xlsx:   Provides functions for exporting and formatting data in a .xlsx
+            file. Uses openpyxl to export and read data.
 
-            to_xlsx -> Allows data to be appended to an existing file as new Sheets
-            within the file.
+            to_xlsx -> Allows data to be appended to an existing file as new
+            Sheets within the file.
 
-            column_format -> a function which returns a basic format allowing for
-            text alignment, number_format, and column width to be set.
+            column_format -> a function which returns a basic format allowing
+            for text alignment, number_format, and column width to be set.
 
             default_formats -> analyzes and existing sheet and provides default
             text alignment, column width, and number_format options based upon
             how the .xlsx file has stored the data.
 
-            column_formats -> returns a column format for each column in the sheet
-            using either provided formats or default formats.
+            column_formats -> returns a column format for each column in the
+            sheet using either provided formats or default formats.
 
             format_sheet -> formats a sheet and optionally adds the sheet as a
             Worksheet table with a default table format.
 """
 
-__version__ = "0.0.6"
-
 from jedi_toolz import config
-from jedi_toolz.show import show
-from jedi_toolz import xlsx
+from jedi_toolz.show import *
+from jedi_toolz.xlsx import *
 from jedi_toolz import domo
-from jedi_toolz import data
+from jedi_toolz.data import *

@@ -1,7 +1,7 @@
 __all__ = ['transpose', 'wrap_row', 'wrap_table', 'show']
 
 # Internal Cell
-from jedi_toolz.data import handle_data
+from jedi_toolz.data import handle_data, Table
 from textwrap import fill
 import toolz.curried as tz
 import itertools as it
@@ -24,12 +24,12 @@ def text_table(data, print_out=True, **tabulate_args):
         return tab(data)
 
 @handle_data
-def head(data, limit=100):
+def head(data: Table, limit=100) -> Table:
     """Returns the first {limit} records of a Table."""
     return list(tz.take(limit, data))
 
 @handle_data
-def transpose(data):
+def transpose(data: Table) -> Table:
     """Transposes a table (list of dicts) such that columns are
     rows and rows are columns.
     """
@@ -92,7 +92,8 @@ def show(data, limit=30, vert=False, col_width=15, table_width=80,
     if text_width(orig) <= table_width:
         if print_out:
             print(orig)
-            return ""
+            # return ""
+            return None
         else:
             return orig
     else:
@@ -109,6 +110,7 @@ def show(data, limit=30, vert=False, col_width=15, table_width=80,
             good = new
         elif print_out:
             print(good)
-            return ""
+            # return ""
+            return None
         elif not print_out:
             return good
