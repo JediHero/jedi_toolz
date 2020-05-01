@@ -5,7 +5,10 @@ from decorator import decorator
 from datetime import datetime, date
 import re
 
-__all__ = "to_table handle_data decamel multichar pretty_names".split()
+__all__ = (
+    "to_table handle_data decamel multichar pretty_names "
+    "today_str"
+).split()
 
 RecordValue = Union[str, bool, int, float, date,
     datetime, None]
@@ -194,3 +197,7 @@ def pretty_names(data: Any, *funcs) -> Table:
         {pretty(k): v for k, v in row.items()}
         for row in data
     ]
+
+def today_str(pattern: str="%Y-%m-%d"):
+    """Formats Today's Date as a string given a strftime pattern."""
+    return date.today().strftime(pattern)

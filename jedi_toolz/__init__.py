@@ -1,4 +1,4 @@
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 
 """jedi_toolz is a python package containing many utilities to simplify working
 with data.
@@ -43,6 +43,9 @@ jedi_toolz is divided into the following sub-modules:
                 {'first_name': 'Joe',  'age_in_years': 40},
                 {'first_name': 'Mary', 'age_in_years': 35},
             ]
+
+            today_str -> Returns Today's date as a string given a strftime
+            pattern.
 
 3.  domo:   Connects to a DOMO instance using credentials defined in a .ini
             config file and provides several helper functions.

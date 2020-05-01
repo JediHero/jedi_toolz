@@ -1,5 +1,7 @@
 from jedi_toolz.data import (is_pandas, is_record_value, is_record,
-    record_value, is_table, to_table, decamel, multichar, pretty_names)
+    record_value, is_table, to_table, decamel, multichar,
+    pretty_names, today_str)
+
 from datetime import datetime, date
 import pandas
 
@@ -83,3 +85,7 @@ def test_pretty_names():
         {"first_name": "Joe", "age_in_years": 40},
         {"first_name": "Mary", "age_in_years": 35},
     ]
+
+def test_today_str():
+    pat = "%Y-%m-%d %a"
+    assert today_str(pat) == date.today().strftime(pat)
