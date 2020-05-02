@@ -6,8 +6,8 @@ from datetime import datetime, date
 import pandas
 
 normal_dict = lambda: {5: "five"}
-record1 = lambda: dict(name="Joe", age=10)
-record2 = lambda: dict(name="Joe", age=10)
+record1 = lambda: dict(FirstName="Joe", Age_in_Years=40)
+record2 = lambda: dict(FirstName="Mary", Age_in_Years=35)
 table = lambda: [record1(), record2()]
 df = lambda: pandas.DataFrame.from_records(table())
 
@@ -54,8 +54,8 @@ def test_to_table():
     assert to_table(table()) == table()
 
     expected1 = [
-        {"column": "name", "value": "Joe"},
-        {"column": "age", "value": 10}
+        {"column": "FirstName", "value": "Joe"},
+        {"column": "Age_in_Years", "value": 40}
     ]
     assert to_table(record1()) == expected1
 
@@ -73,18 +73,26 @@ def test_multichar():
     assert multichar(" First  Name  MD") == "First Name MD"
 
 def test_pretty_names():
-    tbl = [
-        {"FirstName": "Joe", "Age_In_Years": 40},
-        {"FirstName": "Mary", "Age_In_Years": 35},
+    expected1 = [
+        {"First Name": "Joe", "Age in Years": 40},
+        {"First Name": "Mary", "Age in Years": 35},
     ]
-    assert pretty_names(tbl) == [
-        {"First Name": "Joe", "Age In Years": 40},
-        {"First Name": "Mary", "Age In Years": 35},
-    ]
-    assert pretty_names(tbl, decamel,str.lower) == [
+    result1 = pretty_names(table())
+    assert result1 == expected1
+    expected2 = [
         {"first_name": "Joe", "age_in_years": 40},
         {"first_name": "Mary", "age_in_years": 35},
     ]
+    result2 = pretty_names(table(), decamel,str.lower)
+    assert result2 == expected2
+
+    df = pandas.DataFrame.from_records(table())
+    expected3 = [
+        {"First Name": "Joe", "Age in Years": 40},
+        {"First Name": "Mary", "Age in Years": 35},
+    ]
+    result3 = to_table(pretty_names(df))
+    assert result3 == expected3
 
 def test_today_str():
     pat = "%Y-%m-%d %a"

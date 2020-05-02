@@ -101,9 +101,8 @@ def to_table(data: Any) -> Table:
     elif is_pandas(data):
         records = data.to_dict("records")
         return [
-            {str(k): v}
+            {str(k): v for k, v in row.items()}
             for row in records
-            for k, v in row.items()
         ]
 
     else:
@@ -155,8 +154,7 @@ def multichar(string: str, char: str=" ", trim: bool=True):
 
 # %%
 @tz.curry
-@handle_data
-def pretty_names(data: Any, *funcs) -> Table:
+def pretty_names(data: Any, *funcs) -> Any:
     """Returns the Table with pretty names.
     By default, the following functions are applied in order:
     1. decamel with sep = "_"
@@ -193,10 +191,16 @@ def pretty_names(data: Any, *funcs) -> Table:
     else:
         pretty = lambda string: tz.pipe( string, *funcs)
 
-    return [
-        {pretty(k): v for k, v in row.items()}
-        for row in data
-    ]
+    if is_pandas(data):
+        return data.rename(columns={
+            col: pretty(col)
+            for col in data.columns
+        })
+    else:
+        return [
+            {pretty(k): v for k, v in row.items()}
+            for row in to_table(data)
+        ]
 
 def today_str(pattern: str="%Y-%m-%d"):
     """Formats Today's Date as a string given a strftime pattern."""
