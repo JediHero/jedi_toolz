@@ -1,7 +1,6 @@
 from jedi_toolz.data import (is_pandas, is_record_value, is_record,
-    record_value, is_table, to_table, decamel, multichar,
-    pretty_names, today_str)
-
+    record_value, is_table, to_table, pretty_names)
+from jedi_toolz.str_funcs import *
 from datetime import datetime, date
 import pandas
 
@@ -62,16 +61,6 @@ def test_to_table():
     expected2 = [{"column": "5", "value": "five"}]
     assert to_table(normal_dict()) == expected2
 
-def test_decamel():
-    assert decamel("FirstName") == "First_Name"
-    assert decamel("FirstNameMD") == "First_Name_MD"
-    assert decamel("First Name") == "First Name"
-    assert decamel("FirstName", ".") == "First.Name"
-
-def test_multichar():
-    assert multichar("First__Name_MD_", "_") == "First_Name_MD"
-    assert multichar(" First  Name  MD") == "First Name MD"
-
 def test_pretty_names():
     expected1 = [
         {"First Name": "Joe", "Age in Years": 40},
@@ -93,7 +82,3 @@ def test_pretty_names():
     ]
     result3 = to_table(pretty_names(df))
     assert result3 == expected3
-
-def test_today_str():
-    pat = "%Y-%m-%d %a"
-    assert today_str(pat) == date.today().strftime(pat)
