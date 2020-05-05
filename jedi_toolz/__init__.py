@@ -1,4 +1,4 @@
-__version__ = "0.0.9"
+__version__ = "0.0.10"
 
 """jedi_toolz is a python package containing many utilities to simplify working
 with data.
@@ -23,10 +23,6 @@ jedi_toolz is divided into the following sub-modules:
             handle_data -> decorator to convert the first arg of a function to
             a table.
 
-            decamel -> Reformats a string in CamelCase to Camel_Case.
-
-            multichar -> Reformats a string replacing consecutive values of
-            a character with a single value. First__Name_ to First_Name.
 
             pretty_names -> Convert the keys/columns of a table to pretty names.
             >>> tbl = [
@@ -94,6 +90,10 @@ jedi_toolz is divided into the following sub-modules:
 
             format_sheet -> formats a sheet and optionally adds the sheet as a
             Worksheet table with a default table format.
+
+6. str_funcs: Provides utility functions for format strings primarily used as
+            column names into valid or prettier formats by adding or removing
+            underscores, spaces, etc.
 """
 
 from jedi_toolz import config
