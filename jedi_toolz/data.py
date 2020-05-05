@@ -36,6 +36,10 @@ def is_pandas(data: Any) -> bool:
     )
     return has_all_attrs(data, attrs)
 
+def is_ipython() -> bool:
+    """Returns True if the module is running inside an ipython kernal."""
+    return hasattr(__builtins__,'__IPYTHON__')
+
 def is_record_value(value: Any) -> bool:
     """Returns True if value is a valid record value."""
     test = isinstance(value, (str, bool, int, float, date,
