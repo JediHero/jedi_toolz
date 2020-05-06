@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jedi_toolz"
-version = "0.0.10"
+version = "0.0.11"
 description = "A collection of utilities to simplify a data workflow using pandas, Excel, DOMO, and other tools."
 authors = ["JediHero <hansen.rusty@gmail.com>"]
 homepage = "https://github.com/JediHero/jedi_toolz"

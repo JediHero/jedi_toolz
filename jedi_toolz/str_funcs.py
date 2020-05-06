@@ -5,7 +5,7 @@ from typing import Callable
 
 __all__ = (
     "today_str resub decamel invalid_first_char replace_non_word "
-    "conseq_char trim fmt_str fmt_attr_name".split()
+    "conseq_char trim fmt_str".split()
 )
 def today_str(pattern: str="%Y-%m-%d"):
     """Formats Today's Date as a string given a strftime pattern."""
@@ -68,10 +68,20 @@ def trim(string: str, char: str="[\s_]") -> str:
     """
     return resub(f"^{char}+|{char}+$", "", string)
 
+COLUMN_FORMATS = decamel, invalid_first_char, replace_non_word, \
+    conseq_char, trim
+
+PRETTY_COLUMN_FORMATS = decamel, invalid_first_char, replace_non_word, \
+    conseq_char, trim, resub("_", " ")
+
+ATTR_FORMATS = decamel, invalid_first_char, replace_non_word, conseq_char
+
 StrFunc = Callable[[str],str]
+
 def fmt_str(string, *funcs: StrFunc) -> str:
-    """Applies a series of functions to string. By default, the following
-    functions are applied in order:
+    """Applies a series of functions to string. By default, uses the
+    COLUMN_FORMATS tuple which contains the following functions which are
+    applied in order:
     1. decamel
     2. invalid_first_char
     3. replace_non_word
@@ -98,24 +108,6 @@ def fmt_str(string, *funcs: StrFunc) -> str:
     'first_name_company'
     """
     if len(funcs) == 0:
-        defaults = (
-            decamel,
-            invalid_first_char,
-            replace_non_word,
-            conseq_char,
-            trim,
-        )
-        return pipe(string, *defaults)
+        return pipe(string, *COLUMN_FORMATS)
     else:
         return pipe(string, *funcs)
-
-def fmt_attr_name(string: str):
-    """Formats a string to an appropriate attr name. Used to create valid
-    names for namedtuples.
-
-    >>> fmt_str('_Over/Under')
-    'over_under'
-    """
-    funcs = (decamel, invalid_first_char, replace_non_word, conseq_char,
-        trim, str.lower)
-    return fmt_str(string, *funcs)

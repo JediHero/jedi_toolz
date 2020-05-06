@@ -41,8 +41,3 @@ def test_fmt_str():
 
     results2 = [fmt_str(test) for test in tests]
     assert results1 == results2
-
-def test_fmt_attr_name():
-    assert fmt_attr_name("FirstName") == "first_name"
-    assert fmt_attr_name("_FirstName") == "first_name"
-    assert fmt_attr_name("1stName") == "x1st_name"

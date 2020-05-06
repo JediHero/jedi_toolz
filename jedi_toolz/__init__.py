@@ -1,4 +1,4 @@
-__version__ = "0.0.10"
+__version__ = "0.0.11"
 
 """jedi_toolz is a python package containing many utilities to simplify working
 with data.
