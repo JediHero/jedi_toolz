@@ -1,4 +1,4 @@
-__version__ = "0.0.12"
+__version__ = "0.0.13"
 
 """jedi_toolz is a python package containing many utilities to simplify working
 with data.
@@ -27,7 +27,7 @@ spaces, etc.
 
 from jedi_toolz import config
 from jedi_toolz.show import *
-from jedi_toolz.xlsx import *
+from jedi_toolz import xlsx
 from jedi_toolz import domo
 from jedi_toolz.data import *
 from jedi_toolz.str_funcs import *

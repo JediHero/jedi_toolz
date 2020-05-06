@@ -68,19 +68,21 @@ def trim(string: str, char: str="[\s_]") -> str:
     """
     return resub(f"^{char}+|{char}+$", "", string)
 
-COLUMN_FORMATS = decamel, invalid_first_char, replace_non_word, \
-    conseq_char, trim
+# If this is changed, update the doc string for fmt_str
+FMT_STR_COLUMN_FORMATS = (decamel, invalid_first_char, replace_non_word,
+    conseq_char, trim)
 
-PRETTY_COLUMN_FORMATS = decamel, invalid_first_char, replace_non_word, \
-    conseq_char, trim, resub("_", " ")
+FMT_STR_PRETTY_COLUMN_FORMATS = (decamel, invalid_first_char, replace_non_word,
+    conseq_char, trim, resub("_", " "))
 
-ATTR_FORMATS = decamel, invalid_first_char, replace_non_word, conseq_char
+FMT_STR_ATTR_FORMATS = (decamel, invalid_first_char, replace_non_word,
+    conseq_char)
 
 StrFunc = Callable[[str],str]
 
 def fmt_str(string, *funcs: StrFunc) -> str:
     """Applies a series of functions to string. By default, uses the
-    COLUMN_FORMATS tuple which contains the following functions which are
+    FMT_STR_COLUMN_FORMATS tuple which contains the following functions which are
     applied in order:
     1. decamel
     2. invalid_first_char
@@ -108,6 +110,6 @@ def fmt_str(string, *funcs: StrFunc) -> str:
     'first_name_company'
     """
     if len(funcs) == 0:
-        return pipe(string, *COLUMN_FORMATS)
+        return pipe(string, *FMT_STR_COLUMN_FORMATS)
     else:
         return pipe(string, *funcs)
