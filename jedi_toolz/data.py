@@ -40,29 +40,11 @@ def is_ipython() -> bool:
     """Returns True if the module is running inside an ipython kernal."""
     return hasattr(__builtins__,'__IPYTHON__')
 
-def is_record_value(value: Any) -> bool:
-    """Returns True if value is a valid record value."""
-    test = isinstance(value, (str, bool, int, float, date,
-        datetime))
-    return test or value is None
-
-def record_value(value: Any, use_repr: bool=False
-    ) -> RecordValue:
-    """Returns a valid record value or str if not a valid
-    record value."""
-    return (
-        value if is_record_value(value) else
-        str(value)
-    )
-
 def is_record(data: Any) -> bool:
     assert data is not None
     if not isinstance(data, dict):
         return False
     if not all([isinstance(k, str) for k in data]):
-        return False
-    if not all([ is_record_value(v)
-        for k, v in data.items()]):
         return False
     else:
         return True
@@ -93,7 +75,7 @@ def to_table(data: Any) -> Table:
 
     elif isinstance(data, dict):
         return [
-            {"column": str(k), "value": record_value(v)}
+            {"column": str(k), "value":v}
             for k, v in data.items()
         ]
 

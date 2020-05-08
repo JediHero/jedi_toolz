@@ -1,5 +1,5 @@
-from jedi_toolz.data import (is_pandas, is_record_value, is_record,
-    record_value, is_table, to_table, pretty_names)
+from jedi_toolz.data import (is_pandas, is_record,
+    is_table, to_table, pretty_names)
 from jedi_toolz.str_funcs import *
 from datetime import datetime, date
 import pandas
@@ -19,25 +19,6 @@ def test_is_pandas():
     assert is_pandas(record1()) == False
     assert is_pandas(normal_dict()) == False
     assert is_pandas(df()) == True
-
-
-def test_is_record_value():
-    assert is_record_value(1) == True
-    assert is_record_value(1.0) == True
-    assert is_record_value(False) == True
-    assert is_record_value("data") == True
-    assert is_record_value(datetime.now()) == True
-    assert is_record_value(date.today()) == True
-    assert is_record_value(None) == True
-    assert is_record_value(list("data")) == False
-    assert is_record_value(
-        dict(column="k", value="v")) == False
-    assert is_record_value(tuple(["k", "v"])) == False
-
-def test_record_value():
-    assert record_value(None) == None
-    assert record_value(5) == 5
-    assert record_value(normal_dict()) == "{5: 'five'}"
 
 def test_is_record():
     assert is_record(record1()) == True
