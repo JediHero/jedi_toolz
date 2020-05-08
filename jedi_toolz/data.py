@@ -69,10 +69,13 @@ def is_record(data: Any) -> bool:
 
 def is_table(data: Any) -> bool:
     assert data is not None
+
     if is_pandas(data): return False
+    if isinstance(data, dict): return False
+
     attrs = "__iter__ __next__"
-    if not has_any_attrs(data, attrs):
-        return False
+    if not has_any_attrs(data, attrs): return False
+
     first_row, _ = tz.peek(data)
     return is_record(first_row)
 
