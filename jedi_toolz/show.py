@@ -8,7 +8,7 @@ import itertools as it
 from tabulate import tabulate
 from typing import Union
 
-__all__ = ["show transpose wrap_table".split()]
+__all__ = "show transpose wrap_table".split()
 
 @handle_data
 def text_table(data, print_out=True, **tabulate_args):
