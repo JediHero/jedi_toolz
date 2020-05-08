@@ -1,5 +1,3 @@
-__version__ = "0.0.13"
-
 """jedi_toolz is a python package containing many utilities to simplify working
 with data.
 
