@@ -1,5 +1,4 @@
 from typing import List, Dict, Any, Iterator, Union, Callable, Sequence
-import toolz.curried as tz
 from decorator import decorator
 from datetime import datetime, date
 import re
@@ -58,7 +57,7 @@ def is_table(data: Any) -> bool:
     attrs = "__iter__ __next__"
     if not has_any_attrs(data, attrs): return False
 
-    first_row, _ = tz.peek(data)
+    first_row, _ = data[0]
     return is_record(first_row)
 
 def to_table(data: Any) -> Table:
@@ -99,7 +98,6 @@ def handle_data(func, *args, **kwargs):
     updated_args = data, *other_args
     return func(*updated_args, **kwargs)
 
-@tz.curry
 def pretty_names(data: Any, *funcs) -> Any:
     """Returns the Table with pretty names.
     uses the pretty_str function to modify names.
