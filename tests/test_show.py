@@ -71,5 +71,3 @@ def test_show():
     result2 = show(table(), print_out=False)
     print(result2)
     assert result2 == expected2
-
-test_show()

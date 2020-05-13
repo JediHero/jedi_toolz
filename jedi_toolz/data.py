@@ -57,7 +57,7 @@ def is_table(data: Any) -> bool:
     attrs = "__iter__ __next__"
     if not has_any_attrs(data, attrs): return False
 
-    first_row, _ = data[0]
+    first_row = next(iter(data))
     return is_record(first_row)
 
 def to_table(data: Any) -> Table:
