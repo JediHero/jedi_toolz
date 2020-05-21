@@ -65,6 +65,8 @@ def test_to_xlsx():
     }
     assert result2 == expected2
 
+    if file.exists(): file.unlink()
+    assert not file.exists()
 
 def make_test_file(tests: int=3) -> Path:
     """Makes a test .xlsx file used for testing."""
