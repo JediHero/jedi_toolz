@@ -133,7 +133,7 @@ class Formats(NamedTuple):
             for format in formats:
                 assert isinstance(format, ColumnFormat), \
                     "Provided format is not ColumnFormat"
-                if fnmatch(format.match, column) and not seen:
+                if fnmatch(column, format.match) and not seen:
                     results[column] = format
 
             if column not in results:

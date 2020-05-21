@@ -79,7 +79,7 @@ def make_test_file(tests: int=3) -> Path:
 
 
 def test_patterns():
-    file = make_test_file(1)
+    file = make_test_file(3)
     formats = {
         k: v.number_format
         for k, v in Formats.from_sheet(file, "Test 1").to_dict().items()
@@ -97,7 +97,7 @@ def test_patterns():
     user_defined = jt.ColumnFormat("Loan", "#,##0")
     u_formats = {
         k: v.number_format
-        for k, v in Formats.from_user(file, "Test 1", user_defined)
+        for k, v in Formats.from_user(file, "Test 2", user_defined)
             .to_dict().items()
     }
     u_expected = {
@@ -105,6 +105,18 @@ def test_patterns():
         for k, v in expected.items()
     }
     assert u_formats == u_expected
+
+    wildcard = jt.ColumnFormat("*Date", "mm/dd/yyyy")
+    w_formats = {
+        k: v.number_format
+        for k, v in Formats.from_user(file, "Test 3", wildcard)
+            .to_dict().items()
+    }
+    w_expected = {
+        k: ("mm/dd/yyyy" if "Date" in k else v)
+        for k, v in expected.items()
+    }
+    assert w_formats == w_expected
 
 
 def test_format_sheet():
